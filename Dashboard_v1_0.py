@@ -17,6 +17,7 @@ def load_data(file_path):
 
 # Initialize Dash app
 app = dash.Dash(__name__)
+server = app.server  # Expose Flask server for deployment
 
 # App Layout
 app.layout = html.Div([
