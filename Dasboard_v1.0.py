@@ -2,41 +2,26 @@ import dash
 from dash import dcc, html, Input, Output
 import pandas as pd
 import plotly.express as px
-import os
 
-# Folder path
-folder_path = r"C:\Users\DanGulyas\OneDrive - MOLGROUP\Work\Cikkszám osztályozás riportok\Dashboard\ZWSR"
-
-
-# Function to get all Excel files from the folder
-def get_excel_files(folder_path):
-    files = [
-        os.path.join(folder_path, file)
-        for file in os.listdir(folder_path)
-        if file.endswith(".xlsx")
-    ]
-    return files
-
+# Map file names to their Dropbox URLs
+file_paths = {
+    "Report_0114": "https://www.dropbox.com/scl/fi/nlx4tcznfmemrr5ehw518/ZWSR_osztalyozas_matrix_0114_riport.xlsx?rlkey=sqc1xavcrv03q4gm6mf3wy3dq&e=1&st=8tltdyks&raw=1",
+    "Report_0116": "https://www.dropbox.com/scl/fi/6nr5b9w38uvhaj4qp5l53/ZWSR_osztalyozas_matrix_0116_riport.xlsx?rlkey=ljjlmu0r7vtm47fidh08colq0&st=6ogz28wo&raw=1"
+}
 
 # Function to load data from a specific file
 def load_data(file_path):
     sheet_name = "Red Filled Empty Cell Counts"  # Update the sheet name if necessary
-    df = pd.read_excel(file_path, sheet_name=sheet_name)
+    df = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')  # Specify engine
     return df
-
-
-# Map file names to their paths dynamically
-excel_files = get_excel_files(folder_path)
-file_paths = {
-    os.path.basename(file).replace(".xlsx", ""): file for file in excel_files
-}
 
 # Initialize Dash app
 app = dash.Dash(__name__)
 
+# App Layout
 app.layout = html.Div([
     html.H1(
-        "Red Filled Empty Cells Count Dashboard",
+        "Osztályjellezők hibás rekordjainak száma",
         style={"textAlign": "center"}  # Center-align the title
     ),
     html.Label("Select File:", style={"font-weight": "bold", "margin-top": "20px"}),
@@ -48,7 +33,6 @@ app.layout = html.Div([
     ),
     dcc.Graph(id="bar-chart")
 ])
-
 
 # Callback to update the bar chart based on selected file
 @app.callback(
@@ -75,12 +59,9 @@ def update_chart(selected_file):
         title={"text": f"Red Filled Empty Cells Count ({selected_file})", "x": 0.5},  # Center the chart title
         coloraxis_colorbar={"title": "Empty Cells Count"},  # Add colorbar title
     )
-    # Adjust color scale to avoid overly white bars for small values
-    fig.update_traces(marker=dict(cmin=0, cmax=df["Red Filled Empty Cells Count"].max() * 0.9))  # Limit deviation
-
     return fig
-
 
 # Run the app
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host='127.0.0.1')  # Run on localhost
+
