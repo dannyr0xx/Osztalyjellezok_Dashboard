@@ -153,3 +153,4 @@ wsproto==1.2.0
 xlrd==2.0.1
 zeep==4.3.1
 zipp==3.21.0
+gunicorn
