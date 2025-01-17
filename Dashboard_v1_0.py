@@ -22,7 +22,7 @@ server = app.server  # Expose Flask server for deployment
 # App Layout
 app.layout = html.Div([
     html.H1(
-        "Osztályjellezők hibás rekordjainak száma",
+        "Osztályjellemzők hibás rekordjainak száma",
         style={"textAlign": "center"}  # Center-align the title
     ),
     html.Label("Select File:", style={"font-weight": "bold", "margin-top": "20px"}),
