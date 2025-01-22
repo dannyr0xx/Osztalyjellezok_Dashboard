@@ -5,8 +5,9 @@ import plotly.express as px
 
 # Map file names to their Dropbox URLs with updated keys
 file_paths = {
-    "ZWSR_Report_0114": "https://www.dropbox.com/scl/fi/nlx4tcznfmemrr5ehw518/ZWSR_osztalyozas_matrix_0114_riport.xlsx?rlkey=sqc1xavcrv03q4gm6mf3wy3dq&e=1&st=8tltdyks&raw=1",
-    "ZWSR_Report_0116": "https://www.dropbox.com/scl/fi/6nr5b9w38uvhaj4qp5l53/ZWSR_osztalyozas_matrix_0116_riport.xlsx?rlkey=ljjlmu0r7vtm47fidh08colq0&st=6ogz28wo&raw=1"
+    "Report_0114": "https://www.dropbox.com/scl/fi/nlx4tcznfmemrr5ehw518/ZWSR_osztalyozas_matrix_0114_riport.xlsx?rlkey=sqc1xavcrv03q4gm6mf3wy3dq&e=1&st=8tltdyks&raw=1",
+    "Report_0116": "https://www.dropbox.com/scl/fi/6nr5b9w38uvhaj4qp5l53/ZWSR_osztalyozas_matrix_0116_riport.xlsx?rlkey=ljjlmu0r7vtm47fidh08colq0&st=6ogz28wo&raw=1",
+    "Report_0122": "https://www.dropbox.com/scl/fi/sx89joup2q8tcnihkc1ch/ZWSR_osztalyozas_matrix_0122_report.xlsx?rlkey=c1wqtbiq5sg951nv473yv7ru5&st=n9k9ktlo&raw=1"
 }
 
 # Function to load data from a specific file
