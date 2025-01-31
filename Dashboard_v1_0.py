@@ -21,48 +21,64 @@ def load_data(file_path):
 app = dash.Dash(__name__)
 server = app.server  # Expose Flask server for deployment
 
-# App Layout
+# App layout
 app.layout = html.Div([
-    html.H1(
-        "Osztályjellemzők hibás rekordjainak száma",
-        style={"textAlign": "center"}  # Center-align the title
-    ),
-    html.Label("Select File:", style={"font-weight": "bold", "margin-top": "20px"}),
+    html.H1("Osztályjellemzők hibás rekordjainak száma", style={"textAlign": "center"}),
+    html.Label("Riport kiválasztása:", style={"font-weight": "bold", "margin-top": "20px"}),
     dcc.Dropdown(
         id="file-dropdown",
         options=[{"label": key, "value": key} for key in file_paths.keys()],
-        value=list(file_paths.keys())[0],  # Default to the first file
-        style={"width": "50%", "margin": "auto"}  # Center-align the dropdown
+        value=list(file_paths.keys())[0],
+        style={"width": "50%", "margin": "auto"}
     ),
-    dcc.Graph(id="bar-chart")
+    dcc.Graph(id="bar-chart"),
+    html.Label("Eltávolított oszlopok:", style={"font-weight": "bold", "margin-top": "20px"}),
+    dcc.Dropdown(id="disappeared-columns", style={"width": "50%", "margin": "auto"}),
 ])
 
-# Callback to update the bar chart based on selected file
+# Store previously loaded data
+previous_columns = []
+
+# Callback to update the bar chart and detect disappeared columns
 @app.callback(
-    Output("bar-chart", "figure"),
+    [Output("bar-chart", "figure"), Output("disappeared-columns", "options")],
     [Input("file-dropdown", "value")]
 )
 def update_chart(selected_file):
-    # Load the selected file's data
+    global previous_columns
+    # Load current file's data
     file_path = file_paths[selected_file]
     df = load_data(file_path)
 
-    # Create bar chart with conditional coloring
+    # Get the current columns
+    current_columns = df["Column"].tolist()
+
+    # Find disappeared columns
+    disappeared_columns = list(set(previous_columns) - set(current_columns)) if previous_columns else []
+
+    # Update the previous columns
+    previous_columns = current_columns
+
+    # Create bar chart
     fig = px.bar(
         df,
         x="Column",
         y="Red Filled Empty Cells Count",
-        color="Red Filled Empty Cells Count",  # Use value for coloring
-        color_continuous_scale=px.colors.sequential.Blues,  # Use a blue gradient
+        color="Red Filled Empty Cells Count",
+        color_continuous_scale=px.colors.sequential.Blues,
         title=f"Red Filled Empty Cells Count ({selected_file})",
         labels={"Red Filled Empty Cells Count": "Empty Cells Count"}
     )
     fig.update_layout(
-        xaxis_tickangle=-45,  # Rotate x-axis labels for readability
-        title={"text": f"Red Filled Empty Cells Count ({selected_file})", "x": 0.5},  # Center the chart title
-        coloraxis_colorbar={"title": "Empty Cells Count"},  # Add colorbar title
+        xaxis_tickangle=-45,
+        title={"text": f"Red Filled Empty Cells Count ({selected_file})", "x": 0.5},
+        coloraxis_colorbar={"title": "Empty Cells Count"}
     )
-    return fig
+
+    # Format disappeared columns as dropdown options
+    disappeared_options = [{"label": col, "value": col} for col in disappeared_columns]
+
+    return fig, disappeared_options
 
 # Run the app
 if __name__ == "__main__":
