@@ -8,7 +8,8 @@ file_paths = {
     "ZWSR_Report_0114": "https://www.dropbox.com/scl/fi/nlx4tcznfmemrr5ehw518/ZWSR_osztalyozas_matrix_0114_riport.xlsx?rlkey=sqc1xavcrv03q4gm6mf3wy3dq&e=1&st=8tltdyks&raw=1",
     "ZWSR_Report_0116": "https://www.dropbox.com/scl/fi/6nr5b9w38uvhaj4qp5l53/ZWSR_osztalyozas_matrix_0116_riport.xlsx?rlkey=ljjlmu0r7vtm47fidh08colq0&st=6ogz28wo&raw=1",
     "ZWSR_Report_0122": "https://www.dropbox.com/scl/fi/sx89joup2q8tcnihkc1ch/ZWSR_osztalyozas_matrix_0122_report.xlsx?rlkey=c1wqtbiq5sg951nv473yv7ru5&st=n9k9ktlo&raw=1",
-    "ZWSR_Report_0123": "https://www.dropbox.com/scl/fi/fl0sbhzzbxi2ajqtw8p0w/ZWSR_osztalyozas_matrix_0123_report.xlsx?rlkey=my53vtbee905ckvh8chrme4y4&st=6qodv1kq&raw=1"
+    "ZWSR_Report_0123": "https://www.dropbox.com/scl/fi/fl0sbhzzbxi2ajqtw8p0w/ZWSR_osztalyozas_matrix_0123_report.xlsx?rlkey=my53vtbee905ckvh8chrme4y4&st=6qodv1kq&raw=1",
+    "ZWSR_Report_0224": "https://www.dropbox.com/scl/fi/swx13dm7a0260n15sqz6a/ZWSR_osztalyozas_matrix_0224_report.xlsx?rlkey=bmm0ynuk4we4te94swmh1cikk&st=1sn3in42&raw=1"
 }
 
 # Function to load data from a specific file
@@ -19,6 +20,7 @@ def load_data(file_path):
 
 # Initialize Dash app
 app = dash.Dash(__name__)
+app.title = "SAP Osztályozás, osztályjellemzők adatminőség Dasboard"
 server = app.server  # Expose Flask server for deployment
 
 # App layout
