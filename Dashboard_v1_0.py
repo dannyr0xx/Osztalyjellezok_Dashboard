@@ -9,7 +9,8 @@ file_paths = {
     "ZWSR_Report_0116": "https://www.dropbox.com/scl/fi/6nr5b9w38uvhaj4qp5l53/ZWSR_osztalyozas_matrix_0116_riport.xlsx?rlkey=ljjlmu0r7vtm47fidh08colq0&st=6ogz28wo&raw=1",
     "ZWSR_Report_0122": "https://www.dropbox.com/scl/fi/sx89joup2q8tcnihkc1ch/ZWSR_osztalyozas_matrix_0122_report.xlsx?rlkey=c1wqtbiq5sg951nv473yv7ru5&st=n9k9ktlo&raw=1",
     "ZWSR_Report_0123": "https://www.dropbox.com/scl/fi/fl0sbhzzbxi2ajqtw8p0w/ZWSR_osztalyozas_matrix_0123_report.xlsx?rlkey=my53vtbee905ckvh8chrme4y4&st=6qodv1kq&raw=1",
-    "ZWSR_Report_0224": "https://www.dropbox.com/scl/fi/swx13dm7a0260n15sqz6a/ZWSR_osztalyozas_matrix_0224_report.xlsx?rlkey=bmm0ynuk4we4te94swmh1cikk&st=1sn3in42&raw=1"
+    "ZWSR_Report_0224": "https://www.dropbox.com/scl/fi/swx13dm7a0260n15sqz6a/ZWSR_osztalyozas_matrix_0224_report.xlsx?rlkey=bmm0ynuk4we4te94swmh1cikk&st=1sn3in42&raw=1",
+    "ZWSR_Report_0228": r"C:\Users\DanGulyas\OneDrive - MOLGROUP\Cikkek osztályozás\Output cikkek\Riportok\ZWSR_osztalyozas_matrix_0228_report.xlsx"
 }
 
 # Function to load data from a specific file
@@ -21,7 +22,6 @@ def load_data(file_path):
 # Initialize Dash app
 app = dash.Dash(__name__)
 app.title = "SAP Osztályozás, osztályjellemzők adatminőség Dasboard"
-server = app.server  # Expose Flask server for deployment
 
 # App layout
 app.layout = html.Div([
@@ -51,6 +51,7 @@ def update_chart(selected_file):
     # Load current file's data
     file_path = file_paths[selected_file]
     df = load_data(file_path)
+    df["Red Filled Empty Cells Count"] = df["Red Filled Empty Cells Count"].fillna(0).astype(int)
 
     # Get the current columns
     current_columns = df["Column"].tolist()
@@ -69,7 +70,8 @@ def update_chart(selected_file):
         color="Red Filled Empty Cells Count",
         color_continuous_scale=px.colors.sequential.Blues,
         title=f"Red Filled Empty Cells Count ({selected_file})",
-        labels={"Red Filled Empty Cells Count": "Empty Cells Count"}
+        labels={"Red Filled Empty Cells Count": "Empty Cells Count"},
+        text=df["Red Filled Empty Cells Count"].apply(lambda x: str(x) if x != 0 else "0")
     )
     fig.update_layout(
         xaxis_tickangle=-45,
