@@ -22,6 +22,7 @@ def load_data(file_path):
 # Initialize Dash app
 app = dash.Dash(__name__)
 app.title = "SAP Osztályozás, osztályjellemzők adatminőség Dasboard"
+server = app.server  # Expose Flask server for deployment
 
 # App layout
 app.layout = html.Div([
